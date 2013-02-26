@@ -1,3 +1,4 @@
+local thisAddon = ...
 local select = select
 local pairs = pairs
 local GetCVarBool = GetCVarBool
@@ -37,8 +38,9 @@ local events = {
 	CHAT_MSG_MONSTER_SAY = "chatBubbles", CHAT_MSG_MONSTER_YELL = "chatBubbles", CHAT_MSG_MONSTER_PARTY = "chatBubblesParty",
 }
 
-f:SetScript('OnEvent', function(self, event)
-	self:UnregisterEvent'PLAYER_LOGIN'
+f:SetScript('OnEvent', function(self, event, addon)
+	if addon ~= thisAddon then return end
+	self:UnregisterEvent'ADDON_LOADED'
 	self:Show()
 	self:SetScript('OnEvent', function(self, event)
 		if GetCVarBool(events[event]) then
@@ -56,7 +58,7 @@ f:SetScript('OnEvent', function(self, event)
 		self:RegisterEvent(k)
 	end
 end)
-f:RegisterEvent'PLAYER_LOGIN'
+f:RegisterEvent'ADDON_LOADED'
 
 f:Hide()
 f.elapsed = 0
